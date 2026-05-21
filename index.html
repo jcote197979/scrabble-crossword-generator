@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Scrabble Crossword Generator</title>
+  
+  <!-- Premium Typography and Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel&family=Cormorant+Garamond&family=Dancing+Script&family=Great+Vibes&family=Inter:wght@300;400;500;700;900&family=Parisienne&family=Playfair+Display:ital,wght@0,700;1,700&family=Sacramento&family=Satisfy&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <!-- Ambient Gradient Background Blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  
+  <div class="app-container">
+    <!-- Header Title -->
+    <header class="app-header">
+      <div class="logo">
+        <img src="/logo_jnj.png" alt="JNJ Logo" class="app-logo">
+        <span class="tile-logo">S</span>
+        <span class="tile-logo">C</span>
+        <h1>Scrabble Crossword Generator</h1>
+      </div>
+      <span class="version-badge">Premium v2.0</span>
+    </header>
+
+    <div class="app-body">
+      <!-- Configuration Sidebar -->
+      <aside class="control-panel glass">
+        <!-- Step 1: Dimensions -->
+        <details class="panel-section" open>
+          <summary class="section-title">
+            <span class="step-num">1</span>
+            <h2>Board Dimensions</h2>
+          </summary>
+          <div class="section-content">
+            <div class="input-group">
+              <label for="board-size">Select Size (Aspect Ratio)</label>
+              <select id="board-size" class="custom-select">
+                <option value="medium_portrait">Medium Portrait - 229 x 305 mm (3:4)</option>
+                <option value="large_portrait">Large Portrait - 305 x 406 mm (3:4)</option>
+                <option value="square" selected>Square - 305 x 305 mm (1:1)</option>
+                <option value="landscape">Landscape - 406 x 305 mm (4:3)</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <!-- Step 2: Title Settings -->
+        <details class="panel-section" open>
+          <summary class="section-title">
+            <span class="step-num">2</span>
+            <h2>Board Title</h2>
+          </summary>
+          <div class="section-content">
+            <div class="input-group">
+              <label for="board-title-input">Title Text</label>
+              <input type="text" id="board-title-input" class="custom-input" value="Our Family" placeholder="e.g. Our Family, The Smiths">
+            </div>
+
+            <div class="grid-2-cols">
+              <div class="input-group">
+                <label for="title-font">Title Font</label>
+                <select id="title-font" class="custom-select font-picker">
+                  <option value="Alex Brush" selected>Alex Brush</option>
+                  <option value="Dancing Script">Dancing Script</option>
+                  <option value="Great Vibes">Great Vibes</option>
+                  <option value="Parisienne">Parisienne</option>
+                  <option value="Sacramento">Sacramento</option>
+                  <option value="Satisfy">Satisfy</option>
+                  <option value="Playfair Display">Playfair Display</option>
+                  <option value="Cinzel">Cinzel</option>
+                  <option value="Cormorant Garamond">Cormorant Garamond</option>
+                </select>
+              </div>
+              
+              <div class="input-group">
+                <label for="title-size">Font Size (mm)</label>
+                <input type="number" id="title-size" class="custom-input" value="40" min="8" max="60" step="1">
+              </div>
+            </div>
+
+            <div class="grid-2-cols">
+              <div class="input-group">
+                <label for="title-x-offset">X Offset (mm)</label>
+                <input type="number" id="title-x-offset" class="custom-input" value="0" min="-100" max="100" step="1">
+              </div>
+              <div class="input-group">
+                <label for="title-y-offset">Y Offset (mm)</label>
+                <input type="number" id="title-y-offset" class="custom-input" value="0" min="-100" max="100" step="1">
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="divider-type">Divider Graphic</label>
+              <select id="divider-type" class="custom-select">
+                <option value="hearts" selected>Decorative Heart Line</option>
+                <option value="stars">Decorative Star Line</option>
+                <option value="classic">Classic Dots/Swirl</option>
+                <option value="line">Simple Horizontal Line</option>
+                <option value="none">No Divider</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <!-- Step 3: Names Input -->
+        <details class="panel-section" open>
+          <summary class="section-title">
+            <span class="step-num">3</span>
+            <h2>Names List</h2>
+          </summary>
+          <div class="section-content">
+            <div class="input-group">
+              <label for="names-input">Enter Names</label>
+              <textarea id="names-input" class="custom-textarea" rows="4" placeholder="Enter family names separated by commas or spaces. e.g. Jonathan, Julie, Steve, Samuel"></textarea>
+              <small class="helper-text">Separated by spaces, commas, or new lines.</small>
+            </div>
+            
+            <button id="btn-generate" class="btn btn-primary">
+              <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.228 9H18.91M5 12h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4a1 1 0 011-1z" /></svg>
+              Generate Layouts
+            </button>
+          </div>
+        </details>
+
+        <!-- Step 4: Appearance -->
+        <details class="panel-section" open>
+          <summary class="section-title">
+            <span class="step-num">4</span>
+            <h2>Board Appearance</h2>
+          </summary>
+          <div class="section-content">
+            <div class="input-group">
+              <label for="board-background">Board Background Style</label>
+              <select id="board-background" class="custom-select">
+                <option value="brown" selected>Warm Mahogany (Brown)</option>
+                <option value="dark">Dark Oak (Charcoal)</option>
+                <option value="light">Light Birch (Natural)</option>
+                <option value="plain_white">Clean Matte White</option>
+                <option value="plain_black">Clean Matte Black</option>
+              </select>
+            </div>
+            
+            <div class="input-group">
+              <label for="drag-mode-select">Drag Interaction Mode</label>
+              <select id="drag-mode-select" class="custom-select">
+                <option value="grid" selected>Move Entire Grid</option>
+                <option value="tile">Move Individual Tiles</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="tile-texture">Tile Texture Style</label>
+              <select id="tile-texture" class="custom-select">
+                <option value="maple" selected>Natural Maple (Light)</option>
+                <option value="walnut">Dark Walnut (Elegant)</option>
+                <option value="cherry">Warm Cherry (Reddish)</option>
+                <option value="white">Clean White Acrylic</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="title-texture">Title Texture Style</label>
+              <select id="title-texture" class="custom-select">
+                <option value="none" selected>Solid Color (No Texture)</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="tile-font-style">Tile Font Style</label>
+              <select id="tile-font-style" class="custom-select">
+                <option value="system" selected>Standard Font (Separate Points)</option>
+                <option value="english">Scrabble English Font (Built-in Points)</option>
+                <option value="french">Scrabble French Font (Built-in Points)</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <!-- Step 5: Export options -->
+        <details class="panel-section" open>
+          <summary class="section-title">
+            <span class="step-num">5</span>
+            <h2>Export Options</h2>
+          </summary>
+          <div class="section-content flex-col gap-sm">
+            <button id="btn-copy-code" class="btn btn-secondary">
+              <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+              Copy Production Code
+            </button>
+            <div class="export-actions">
+              <button id="btn-download-svg" class="btn btn-accent">
+                Download SVG
+              </button>
+              <button id="btn-download-png" class="btn btn-outline">
+                Download PNG
+              </button>
+            </div>
+          </div>
+        </details>
+        
+        <!-- Step 6: Developer API Integration -->
+        <details class="panel-section">
+          <summary class="section-title">
+            <span class="step-num">!</span>
+            <h2>Background API</h2>
+          </summary>
+          <div class="section-content api-details text-small">
+            <p>Connect programmatically from scripts or spreadsheets to retrieve SVGs in the background:</p>
+            <pre class="api-code">GET /api/svg?code=...</pre>
+            <p class="text-muted">Copy the "Production Code" from a design, then append it to your URL parameter. Returns a self-contained vector graphic file instantly.</p>
+          </div>
+        </details>
+      </aside>
+
+      <!-- Main Live Preview Area -->
+      <main class="preview-area">
+        <div class="preview-header">
+          <div class="layout-navigation">
+            <button id="btn-prev" class="btn btn-nav" disabled>&larr;</button>
+            <span id="layout-indicator">Layout 0 of 0</span>
+            <button id="btn-next" class="btn btn-nav" disabled>&rarr;</button>
+          </div>
+          <div class="board-specs">
+            <span id="board-grid-size" class="badge">Grid: 0x0</span>
+            <span id="board-dimension-label" class="badge">Size: Square</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Board Canvas Frame -->
+        <div class="canvas-container glass">
+          <div id="board-canvas" class="board-canvas-frame">
+            <!-- SVG rendered dynamically here -->
+            <div class="canvas-placeholder">
+              <svg class="placeholder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p>Enter family names and click <strong>Generate Layouts</strong> to build your customized wood board.</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast hidden">Copied to clipboard!</div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  scrabble-crossword-generator:
+    build: .
+    container_name: ${APP_CONTAINER_NAME:-scrabble-crossword-generator}
+    ports:
+      - "${HOST_PORT:-3000}:${PORT:-3000}"
+    volumes:
+      # Mount textures directories to allow host updates to sync dynamically
+      - ${BOARD_TEXTURES_PATH:-./public/textures/board}:/app/public/textures/board
+      - ${TILES_TEXTURES_PATH:-./public/textures/tiles}:/app/public/textures/tiles
+      - ${TITLE_TEXTURES_PATH:-./public/textures/title}:/app/public/textures/title
+      # Mount font directories to allow host updates to sync dynamically
+      - ${FONT_TILES_PATH:-./public/font_tiles}:/app/public/font_tiles
+      - ${FONTS_TITLES_PATH:-./dist/fonts_titles}:/app/dist/fonts_titles
+    restart: ${RESTART_POLICY:-unless-stopped}
+    environment:
+      - PORT=${PORT:-3000}
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: ${CLOUDFLARED_CONTAINER_NAME:-cloudflared-tunnel}
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN:-}
+    restart: ${RESTART_POLICY:-unless-stopped}
