@@ -97,7 +97,7 @@ async function loadStateFromLocalStorageOrUrl() {
           background: config.background || "brown",
           tileStyle: config.tileStyle || "maple",
           titleStyle: config.titleStyle || "white_blanc_default",
-          tileFont: config.tileFont || "system",
+          tileFont: config.tileFont || "english",
           dividerType: config.dividerType || "hearts",
           dividerSize: config.dividerSize || 1.0,
           currentIndex: config.layoutIndex || 0,
@@ -266,15 +266,13 @@ async function preloadTextures() {
   const fontSelect = document.getElementById('tile-font-style');
   if (fontSelect) {
     fontSelect.innerHTML = '';
-    const stdOpt = document.createElement('option');
-    stdOpt.value = 'system';
-    stdOpt.textContent = 'Standard Font (Separate Points)';
-    stdOpt.selected = true;
-    fontSelect.appendChild(stdOpt);
-    options.fonts.forEach(name => {
+    options.fonts.forEach((name, idx) => {
       const opt = document.createElement('option');
       opt.value = name;
       opt.textContent = `Scrabble ${name.charAt(0).toUpperCase() + name.slice(1)} Font (Built-in Points)`;
+      if (idx === 0) {
+        opt.selected = true;
+      }
       fontSelect.appendChild(opt);
     });
   }

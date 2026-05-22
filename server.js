@@ -129,7 +129,7 @@ function generateSVGFromConfig(config) {
     size = "medium_portrait",
     background = "brown",
     tileStyle = "maple",
-    tileFont = "system",
+    tileFont = "english",
     titleStyle = "white_blanc_default",
     layoutIndex = 0,
     dividerType = "hearts",

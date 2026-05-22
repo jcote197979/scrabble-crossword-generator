@@ -43,7 +43,7 @@ export function renderSVG({
   size = "medium_portrait",
   background = "brown",
   tileStyle = "maple", // maple, walnut, cherry, white
-  tileFont = "system", // system, english, french
+  tileFont = "english", // system, english, french
   gridOffsetX = 0, // in mm
   gridOffsetY = 0, // in mm
   customTileSize = 0, // in mm (user override)
@@ -254,7 +254,7 @@ export function renderSVG({
             font-size="${tileFont !== 'system' ? (tileW * 0.95) : (tileW * 0.58)}" 
             text-anchor="middle" 
             dominant-baseline="middle" 
-            class="tile-letter">${char}</text>
+            class="tile-letter">${char.toLowerCase()}</text>
  
       <!-- Corner Score Point -->
       <text x="${tileW - (tileW * 0.16)}" y="${tileW - (tileW * 0.14)}" 
