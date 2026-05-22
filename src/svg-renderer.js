@@ -251,7 +251,7 @@ export function renderSVG({
  
       <!-- Center Letter -->
       <text x="${tileW / 2}" y="${tileFont !== 'system' ? (tileW / 2) : (tileW / 2 + (tileW * 0.08))}" 
-            font-size="${tileFont !== 'system' ? (tileW * 0.95) : (tileW * 0.58)}" 
+            font-size="${tileFont !== 'system' ? (tileW * 2.4) : (tileW * 0.58)}" 
             text-anchor="middle" 
             dominant-baseline="middle" 
             class="tile-letter">${char.toLowerCase()}</text>
