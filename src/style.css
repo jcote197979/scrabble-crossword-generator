@@ -483,6 +483,11 @@ body {
   /* Standard 1:1 square scale initially */
   aspect-ratio: 1 / 1; 
   width: 440px;
+  
+  /* Optimize for touch interactions and prevent text-selection menus on mobile */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Canvas Placeholder when no board is loaded */
@@ -512,6 +517,9 @@ body {
   display: block;
   width: 100%;
   height: 100%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* 6. Notifications (Toasts) */
