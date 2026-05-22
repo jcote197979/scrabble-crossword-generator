@@ -56,15 +56,15 @@ export function renderSVG({
   const board = BOARD_SIZES[size] || BOARD_SIZES.medium_portrait;
   const boardW = board.width;
   const boardH = board.height;
- 
+
   // 1. Calculate grid scaling and margins
   const marginX = 25; // Minimum horizontal margin in mm
   const marginTop = 75; // Top margin to leave room for Title
   const marginBottom = 25; // Bottom margin in mm
- 
+
   const availableW = boardW - 2 * marginX;
   const availableH = boardH - marginTop - marginBottom;
- 
+
   // Determine tile size (user-override or calculated)
   let tileSize = customTileSize;
   if (!tileSize || tileSize <= 0) {
@@ -73,25 +73,25 @@ export function renderSVG({
     tileSize = Math.min(maxTileW, maxTileH);
     tileSize = Math.max(12, Math.min(26, tileSize)); // Cap between 12mm and 26mm
   }
- 
+
   // Total dimensions of the Scrabble crossword grid
   const gridW = layoutWidth * tileSize;
   const gridH = layoutHeight * tileSize;
- 
+
   // Center the grid in the available area
   const gridStartX = marginX + (availableW - gridW) / 2 + gridOffsetX;
   const gridStartY = marginTop + (availableH - gridH) / 2 + gridOffsetY;
- 
+
   // 2. Base64 background texture matching (supports new path format and old format)
   const bgTexture = woodTextures[`board_${background}`] || woodTextures[`wood_${background}`] || "";
   const tileTexture = woodTextures[`tile_${tileStyle}`] || woodTextures[`wood_tile_${tileStyle}`] || woodTextures["wood_tile"] || "";
   const titleTexture = titleStyle !== "none" ? (woodTextures[`title_${titleStyle}`] || "") : "";
   const tileTheme = TILE_THEMES[tileStyle] || TILE_THEMES.maple;
-  
+
   // Custom font matching
   const customFontBase64 = tileFont !== "system" ? (woodTextures[`Scrabble_${tileFont}`] || woodTextures[tileFont] || "") : "";
   const customTitleFontBase64 = woodTextures[`titlefont_${titleFont}`] || "";
- 
+
   // 3. Generate SVG elements
   let svg = `<?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${boardW} ${boardH}" width="${boardW}mm" height="${boardH}mm" style="background-color: ${BACKGROUND_THEMES[background]?.fill || '#ffffff'};" data-tile-size="${tileSize}">
@@ -195,7 +195,7 @@ export function renderSVG({
   <!-- 4. Crossword Scrabble Tiles Grid -->
   <g id="scrabble-grid">
   `;
- 
+
   // Draw the tiles
   // Pre-aggregate grid cell values to render them cleanly
   const gridCells = {};
@@ -219,23 +219,23 @@ export function renderSVG({
       }
     });
   }
- 
+
   // Render each unique tile
   Object.keys(gridCells).forEach(coord => {
     const [r, c] = coord.split(',').map(Number);
     const tileData = gridCells[coord];
     const char = tileData.char;
     const score = tileData.score;
- 
+
     // Calculate physical tile position (in mm)
     const tileX = gridStartX + c * tileSize;
     const tileY = gridStartY + r * tileSize;
- 
+
     // Tile spacing padding
     const pad = 0.5; // mm spacing between tiles
     const tileW = tileSize - 2 * pad;
     const rx = tileW * 0.08; // rounded corners proportional to tile size
- 
+
     svg += `
     <!-- Tile ${char} at ${r},${c} -->
     <g class="tile-group" data-row="${r}" data-col="${c}" data-char="${char}" data-score="${score}" transform="translate(${tileX + pad}, ${tileY + pad})" filter="url(#tile-shadow)" style="cursor: grab; pointer-events: auto;">
@@ -251,7 +251,7 @@ export function renderSVG({
  
       <!-- Center Letter -->
       <text x="${tileW / 2}" y="${tileFont !== 'system' ? (tileW / 2) : (tileW / 2 + (tileW * 0.08))}" 
-            font-size="${tileFont !== 'system' ? (tileW * 2.4) : (tileW * 0.58)}" 
+            font-size="${tileFont !== 'system' ? (tileW * 2.2) : (tileW * 0.58)}" 
             text-anchor="middle" 
             dominant-baseline="middle" 
             class="tile-letter">${char.toLowerCase()}</text>
@@ -270,21 +270,21 @@ export function renderSVG({
       </g>` : ''}
     </g>`;
   });
- 
+
   svg += `
   </g>
 </svg>
 `;
- 
+
   return svg;
 }
- 
+
 /**
  * Helper to render different divider styles under the board title.
  */
 function renderDivider(type, cx, cy, scale = 1.0) {
   if (type === "none") return "";
-  
+
   let content = "";
   if (type === "line") {
     content = `<line x1="${cx - 25}" y1="${cy}" x2="${cx + 25}" y2="${cy}" class="divider-line" />`;
@@ -314,10 +314,10 @@ function renderDivider(type, cx, cy, scale = 1.0) {
   } else {
     return "";
   }
- 
+
   if (scale === 1.0) {
     return content;
   }
-  
+
   return `<g transform="translate(${cx}, ${cy}) scale(${scale}) translate(${-cx}, ${-cy})">${content}</g>`;
 }
