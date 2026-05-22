@@ -51,6 +51,7 @@ function saveStateToLocalStorage() {
     titleStyle: config.titleStyle,
     tileFont: config.tileFont,
     dividerType: config.dividerType,
+    dividerSize: config.dividerSize,
     currentIndex: appState.currentIndex,
     gridOffsetX: appState.gridOffsetX,
     gridOffsetY: appState.gridOffsetY,
@@ -98,6 +99,7 @@ async function loadStateFromLocalStorageOrUrl() {
           titleStyle: config.titleStyle || "white_blanc_default",
           tileFont: config.tileFont || "system",
           dividerType: config.dividerType || "hearts",
+          dividerSize: config.dividerSize || 1.0,
           currentIndex: config.layoutIndex || 0,
           gridOffsetX: 0,
           gridOffsetY: 0,
@@ -154,6 +156,10 @@ async function loadStateFromLocalStorageOrUrl() {
     if (loadedState.titleStyle !== undefined) setSelect('title-texture', loadedState.titleStyle);
     if (loadedState.tileFont !== undefined) setSelect('tile-font-style', loadedState.tileFont);
     if (loadedState.dividerType !== undefined) setSelect('divider-type', loadedState.dividerType);
+    if (loadedState.dividerSize !== undefined) {
+      const divSizeInput = document.getElementById('divider-size');
+      if (divSizeInput) divSizeInput.value = loadedState.dividerSize;
+    }
     if (loadedState.titleFont !== undefined) setSelect('title-font', loadedState.titleFont);
 
     appState.currentIndex = loadedState.currentIndex || 0;
@@ -467,6 +473,7 @@ function getCurrentConfig() {
     titleStyle: document.getElementById('title-texture').value,
     tileFont: document.getElementById('tile-font-style').value,
     dividerType: document.getElementById('divider-type').value,
+    dividerSize: parseFloat(document.getElementById('divider-size').value) || 1.0,
     layoutIndex: appState.currentIndex
   };
 }
@@ -556,7 +563,8 @@ async function renderCurrentLayout() {
     customTileSize: appState.customTileSize,
     isInteractive: true,
     woodTextures: appState.textures,
-    dividerType: config.dividerType
+    dividerType: config.dividerType,
+    dividerSize: config.dividerSize
   });
 
   // 3. Inject into Canvas container
@@ -654,7 +662,8 @@ async function handleDownloadSVG() {
     customTileSize: appState.customTileSize,
     isInteractive: false,
     woodTextures: appState.textures,
-    dividerType: config.dividerType
+    dividerType: config.dividerType,
+    dividerSize: config.dividerSize
   });
 
   const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
@@ -705,7 +714,8 @@ async function handleDownloadPNG() {
     customTileSize: appState.customTileSize,
     isInteractive: false,
     woodTextures: appState.textures,
-    dividerType: config.dividerType
+    dividerType: config.dividerType,
+    dividerSize: config.dividerSize
   });
 
   const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
@@ -774,6 +784,7 @@ function setupEventListeners() {
     'title-x-offset',
     'title-y-offset',
     'divider-type',
+    'divider-size',
     'board-background',
     'tile-texture',
     'tile-font-style',
@@ -786,7 +797,7 @@ function setupEventListeners() {
       saveStateToLocalStorage();
     });
     // Use input event for sliders or text fields to update instantly as typing
-    if (id === 'board-title-input' || id.includes('offset') || id === 'title-size') {
+    if (id === 'board-title-input' || id.includes('offset') || id === 'title-size' || id === 'divider-size') {
       document.getElementById(id).addEventListener('input', () => {
         renderCurrentLayout();
         saveStateToLocalStorage();
@@ -802,6 +813,7 @@ function setupEventListeners() {
   document.getElementById('btn-copy-code').addEventListener('click', handleCopyCode);
   document.getElementById('btn-download-svg').addEventListener('click', handleDownloadSVG);
   document.getElementById('btn-download-png').addEventListener('click', handleDownloadPNG);
+  document.getElementById('btn-reset-layout').addEventListener('click', handleResetLocation);
 
   // Pagination navigation
   document.getElementById('btn-prev').addEventListener('click', () => {
@@ -1098,6 +1110,27 @@ function setupEventListeners() {
     
     saveStateToLocalStorage();
   });
+}
+
+// Reset all user panning offsets and manually dragged positions
+function handleResetLocation() {
+  appState.gridOffsetX = 0;
+  appState.gridOffsetY = 0;
+  appState.customTileSize = 0;
+  
+  const titleX = document.getElementById('title-x-offset');
+  const titleY = document.getElementById('title-y-offset');
+  if (titleX) titleX.value = 0;
+  if (titleY) titleY.value = 0;
+  
+  if (appState.layouts && appState.layouts[appState.currentIndex]) {
+    const activeLayout = appState.layouts[appState.currentIndex];
+    delete activeLayout.tiles;
+  }
+  
+  renderCurrentLayout();
+  saveStateToLocalStorage();
+  showToast("Layout positions and offsets reset successfully!");
 }
 
 // App Startup

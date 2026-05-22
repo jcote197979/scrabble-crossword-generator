@@ -106,6 +106,12 @@
                 <option value="none">No Divider</option>
               </select>
             </div>
+            
+            <div class="input-group">
+              <label for="divider-size">Divider Size (Scale)</label>
+              <input type="range" id="divider-size" min="0.5" max="2.5" step="0.1" value="1.0" style="width: 100%; accent-color: var(--primary);">
+              <small class="helper-text">Adjust the size of the divider line and icon.</small>
+            </div>
           </div>
         </details>
 
@@ -226,6 +232,9 @@
             <button id="btn-prev" class="btn btn-nav" disabled>&larr;</button>
             <span id="layout-indicator">Layout 0 of 0</span>
             <button id="btn-next" class="btn btn-nav" disabled>&rarr;</button>
+            <button id="btn-reset-layout" class="btn btn-nav" title="Reset all offsets & positions" style="margin-left: 6px;">
+              <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 14px; height: 14px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.228 9H18.91M5 12h4" /></svg>
+            </button>
           </div>
           <div class="board-specs">
             <span id="board-grid-size" class="badge">Grid: 0x0</span>

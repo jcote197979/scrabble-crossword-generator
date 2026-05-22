@@ -132,7 +132,8 @@ function generateSVGFromConfig(config) {
     tileFont = "system",
     titleStyle = "white_blanc_default",
     layoutIndex = 0,
-    dividerType = "hearts"
+    dividerType = "hearts",
+    dividerSize = 1.0
   } = config;
 
   if (!names || names.length === 0) {
@@ -168,7 +169,8 @@ function generateSVGFromConfig(config) {
     tileFont,
     titleStyle,
     woodTextures,
-    dividerType
+    dividerType,
+    dividerSize
   });
 }
 
