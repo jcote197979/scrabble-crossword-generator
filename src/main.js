@@ -450,7 +450,7 @@ async function ensureTitleFontLoaded(fontName) {
 function getCurrentConfig() {
   const namesText = document.getElementById('names-input').value;
   const names = namesText
-    .split(/[\n,]+/) // split by newlines or commas
+    .split(/[\n,\s]+/) // split by newlines, commas, or spaces
     .map(n => n.trim())
     .filter(n => n.length > 0);
 
